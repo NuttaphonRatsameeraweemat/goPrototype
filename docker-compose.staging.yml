@@ -1,0 +1,39 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3'
+
+# Define services
+services:
+
+  # App Service
+  app:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    volumes:
+      - "/logs:/app/Logs"
+    restart: always
+    depends_on: 
+      - redis # This service depends on redis. Start that first.
+    environment: # Pass environment variables to the service
+      ENV: staging
+      REDIS_URL: redis:6379
+      REDIS_PASSWORD: 6zHhH2Yfwg5Yja5A
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+
+  # Redis Service   
+  redis:
+    image: "redis:alpine" # Use a public Redis image to build the redis service
+    command: redis-server --requirepass 6zHhH2Yfwg5Yja5A
+    ports:
+      - "6379:6379" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:

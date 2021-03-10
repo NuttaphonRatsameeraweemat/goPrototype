@@ -1,0 +1,10 @@
+redis:
+  url: "localhost:6379"
+  password: "6zHhH2Yfwg5Yja5A"
+basic:
+  username: "admin"
+  password: "ck7aZZXR6aet9kfn"
+bikeApi:
+  url: ""
+  username: ""
+  password: ""
